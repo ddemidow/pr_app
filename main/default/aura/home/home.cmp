@@ -1,4 +1,4 @@
 <aura:component>
-    <c:setupWizard/> test git1
+    <c:setupWizard/> test git123
 </aura:component>	
 
