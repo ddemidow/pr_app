@@ -1,0 +1,27 @@
+<apex:page standardStylesheets="false" showHeader="false">
+    <apex:includeLightning />
+
+    <center><h1>Congratulations</h1>
+        This is your new Home Page</center>
+
+    <div id="lightning" />
+
+
+    <script src="https://my-present-app-developer-edition.ap6.force.com/lightning/lightning.out.js" onload="console.log('loaded');">
+        console.log('start 1');
+    </script>
+    <script>
+    console.log('start 2');
+    $Lightning.use("c:homeWrapper", function() {
+                console.log('start create');
+                $Lightning.createComponent("c:home",
+                        null,
+                        "lightning",
+                        function(cmp) {
+                            console.log("button was created");
+                            // do some stuff
+                        }
+                );
+            });
+    </script>
+</apex:page>

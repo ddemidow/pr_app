@@ -1,0 +1,4 @@
+<aura:component>
+    <c:setupWizard/> test git1
+</aura:component>	
+
