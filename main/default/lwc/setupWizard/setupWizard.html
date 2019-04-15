@@ -1,7 +1,23 @@
 <template>
     <lightning-layout horizontal-align="center">
         <lightning-layout-item size="6">
-            <lightning-card title="Login"></lightning-card>
+            <template if:true={userRole}>
+                <lightning-card variant="narrow" title="Start Your Working" icon-name="standard:avatar">
+                    Hello {username}! You is a {userRole}
+                </lightning-card>
+            </template>
+            <template if:false={userRole}>
+                <lightning-card variant="narrow" title="Test Login" icon-name="standard:avatar">
+                    <lightning-input type="text" label="Username" value={username} onchange={handleUsernameChange} class="slds-p-horizontal_x-small"></lightning-input>
+                    <lightning-input type="password" label="Password" value={password} onchange={handlePasswordChange} class="slds-p-horizontal_x-small"></lightning-input>
+                    <div slot="footer">
+                        <center>
+                            <lightning-button label="Sign In" variant="brand" class="slds-p-right_x-small" onclick={handleLogin}></lightning-button>
+                            <lightning-button label="Forgot Password" variant="base" class="slds-p-left_x-small"></lightning-button>
+                        </center>
+                    </div>
+                </lightning-card>
+            </template>
         </lightning-layout-item>
     </lightning-layout>
 </template>
