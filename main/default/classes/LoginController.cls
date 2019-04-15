@@ -2,7 +2,6 @@ public with sharing class LoginController implements Callable {
     public Object call(String action, Map<String, Object> args)
     {
         Utils.ActionType actionType = Utils.getActionType(action);
-        String test = '1';
         
         switch on actionType
         {
@@ -16,7 +15,7 @@ public with sharing class LoginController implements Callable {
         }
     }
 
-    public String login(String userName, String password)
+    public Object login(String userName, String password)
     {
         List<User__c> users = [
             SELECT Id, User_Role__r.Name, Username__c, Name, Password__c
@@ -34,7 +33,8 @@ public with sharing class LoginController implements Callable {
             
             if (user.Password__c == password)
             {
-                return user.User_Role__r.Name;
+                System.debug(user);
+                return user;
             }
             else
             {

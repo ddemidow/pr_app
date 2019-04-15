@@ -8,18 +8,15 @@
 
 
     <script src="https://my-present-app-developer-edition.ap6.force.com/lightning/lightning.out.js" onload="console.log('loaded');">
-        console.log('start 1');
     </script>
     <script>
     console.log('start 2');
     $Lightning.use("c:homeWrapper", function() {
-                console.log('start create');
                 $Lightning.createComponent("c:home",
                         null,
                         "lightning",
                         function(cmp) {
-                            console.log("button was created");
-                            // do some stuff
+                            console.log("Components loaded!");
                         }
                 );
             });
