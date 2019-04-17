@@ -2,7 +2,7 @@ public class Utils
 {
     public enum ActionType
     {
-        USER_LOGIN
+        USER_LOGIN, CHECK_PASSWORD
     }
     
     public static Map<String, ActionType> actionMapping {
@@ -12,7 +12,8 @@ public class Utils
             {
                 actionMapping = new Map<String, ActionType>
                 {
-                    'user-login' => ActionType.USER_LOGIN
+                    'user-login' => ActionType.USER_LOGIN,
+                    'check-password' => ActionType.CHECK_PASSWORD
                 };
             }
             

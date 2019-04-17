@@ -1,9 +1,6 @@
 <apex:page standardStylesheets="false" showHeader="false">
     <apex:includeLightning />
 
-    <center><h1>Congratulations</h1>
-        This is your new Home Page</center>
-
     <div id="lightning" />
 
 

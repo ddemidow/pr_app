@@ -4,11 +4,12 @@ public with sharing class HomePageController implements Callable
     {
         Utils.ActionType actionType = Utils.getActionType(action);
         
+        
         switch on actionType
         {
-            when USER_LOGIN
+            when CHECK_PASSWORD
             {
-                return null;
+                return this.checkUserPassword((String)args.get('userId'), (String)args.get('password'));
             }
             when else
             {
@@ -16,4 +17,31 @@ public with sharing class HomePageController implements Callable
             }
         }
     }
+    
+    private Boolean checkUserPassword(Id userId, String password)
+    {
+        List<User__c> users = [
+            SELECT Id, Password__c
+            FROM User__c
+            WHERE Id = :userId
+        ];
+        
+        if (users.isEmpty())
+        {
+            throw new NoUserException();
+        }
+        else
+        {
+            if (password == users[0].Password__c)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+    
+    class NoUserException extends Exception {}
 }

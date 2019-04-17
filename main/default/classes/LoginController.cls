@@ -18,7 +18,7 @@ public with sharing class LoginController implements Callable {
     public Object login(String userName, String password)
     {
         List<User__c> users = [
-            SELECT Id, User_Role__r.Name, Username__c, Name, Password__c
+            SELECT Id, User_Role__r.Name, Username__c, Name, Password__c, Main_Company__c
             FROM User__c
             WHERE Username__c = :userName
         ];

@@ -1,39 +1,43 @@
 <template>
-    <lightning-layout horizontal-align="center">
+
+
         <template if:true={user}>
-            <lightning-layout-item size="12">
-                <lightning-card variant="narrow" title="Start Your Working" icon-name="utility:settings">
-                    <lightning-button label="Logout" slot="actions" onclick={handleLogout}></lightning-button>
-                    <lightning-tabset>
-                        <lightning-tab label="Home">
-                            Hello {user.Name}! You are a {user.User_Role__r.Name}
-                            <c-home-section></c-home-section>
-                        </lightning-tab>
+            <lightning-layout >
+                <lightning-layout-item size="12">
+                    <lightning-card variant="narrow" title="Start Your Working" icon-name="utility:settings">
+                        <lightning-button label="Logout" slot="actions" onclick={handleLogout}></lightning-button>
 
-                        <lightning-tab label="Manage Users">
-                            Manage Users Developing...
-                        </lightning-tab>
+                        <lightning-tabset>
+                            <lightning-tab label="Home">
+                                <c-home-section user-id={user.Id} company-id={user.Main_Company__c}></c-home-section>
+                            </lightning-tab>
 
-                        <lightning-tab label="Manage Product">
-                            Manage Product Developing...
-                        </lightning-tab>
+                            <lightning-tab label="Manage Users">
+                                Manage Users Developing...
+                            </lightning-tab>
 
-                        <lightning-tab label="Manage Layout">
-                            Manage Layout Developing...
-                        </lightning-tab>
+                            <lightning-tab label="Manage Product">
+                                Manage Product Developing...
+                            </lightning-tab>
 
-                        <lightning-tab label="Incoming orders">
-                            Incoming orders Developing...
-                        </lightning-tab>
+                            <lightning-tab label="Manage Layout">
+                                Manage Layout Developing...
+                            </lightning-tab>
 
-                        <lightning-tab label="Incoming leads">
-                            Incoming leads Developing...
-                        </lightning-tab>
-                    </lightning-tabset>
-                </lightning-card>
-            </lightning-layout-item>
+                            <lightning-tab label="Incoming orders">
+                                Incoming orders Developing...
+                            </lightning-tab>
+
+                            <lightning-tab label="Incoming leads">
+                                Incoming leads Developing...
+                            </lightning-tab>
+                        </lightning-tabset>
+                    </lightning-card>
+                </lightning-layout-item>
+            </lightning-layout>
         </template>
         <template if:false={user}>
+            <lightning-layout horizontal-align="center">
             <lightning-layout-item size="6">
                 <lightning-card variant="narrow" title="Test Login" icon-name="standard:avatar">
                     <div class="slds-p-horizontal_x-small" style="color: red">
@@ -53,11 +57,11 @@
                     </div>
                 </lightning-card>
             </lightning-layout-item>
+            </lightning-layout>
         </template>
         <template if:true={loading}>
             <div class="exampleHolder">
                 <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
             </div>
         </template>
-    </lightning-layout>
 </template>
