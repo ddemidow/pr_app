@@ -1,4 +1,4 @@
-<apex:page standardStylesheets="false" showHeader="false">
+<apex:page controller="ManageUsersController" standardStylesheets="false" showHeader="false" readOnly="false">
     <apex:includeLightning />
 
     <div id="lightning" />
@@ -7,7 +7,6 @@
     <script src="https://my-present-app-developer-edition.ap6.force.com/lightning/lightning.out.js" onload="console.log('loaded');">
     </script>
     <script>
-    console.log('start 2');
     $Lightning.use("c:homeWrapper", function() {
                 $Lightning.createComponent("c:home",
                         null,

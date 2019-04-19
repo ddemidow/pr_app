@@ -1,5 +1,5 @@
 import {LightningElement, track} from 'lwc';
-import invokeAction from '@salesforce/apex/ActionControllerTemplate.invokeAction';
+import invokeCachableAction from '@salesforce/apex/ActionControllerTemplate.invokeCachableAction';
 
 export default class SetupWizard extends LightningElement {
     @track username;
@@ -41,7 +41,7 @@ export default class SetupWizard extends LightningElement {
 
         var strAction = JSON.stringify(action);
 
-        invokeAction({
+        invokeCachableAction({
             actions : strAction
         }).then(results => {
             console.log('Your user: ' + JSON.stringify(results[0]));
@@ -65,6 +65,16 @@ export default class SetupWizard extends LightningElement {
         this.user = null;
         this.deleteCookie(this.usernameCookieName);
         this.deleteCookie(this.passwordCookieName);
+    }
+
+    showSpinner(event) {
+        this.loading = true;
+        event.stopPropagation();
+    }
+
+    hideSpinner(event) {
+        this.loading = false;
+        event.stopPropagation();
     }
 
      getCookie(cname) {

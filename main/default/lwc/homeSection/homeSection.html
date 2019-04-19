@@ -4,10 +4,6 @@
             <lightning-card title="Personal Information" icon-name="utility:user">
                 <lightning-button label="Change Password" slot="actions" onclick={replaceChangePasswordMode}></lightning-button>
                 <lightning-layout-item size="12">
-
-
-                    <!--test comp-->
-
                     <lightning-record-edit-form object-api-name={userObject} record-id={userId} onsuccess={handleUserUpdated}>
                         <lightning-messages></lightning-messages>
                         <div class="slds-grid">
@@ -18,26 +14,12 @@
                                 <lightning-input-field field-name={companyField} value={userCompanyId}></lightning-input-field>
 
                                 <div class="slds-p-around_x-small slds-grid slds-grid_align-center">
-                                    <lightning-button type="submit" variant="brand" label="Save" onclick={spinner}></lightning-button>
+                                    <lightning-button type="submit" variant="brand" label="Save" onclick={showSpinner}></lightning-button>
                                 </div>
                             </div>
                         </div>
-
                     </lightning-record-edit-form>
-
-                    <!--test comp-->
-
-
-                   <!-- <lightning-record-form
-                            record-id={userId}
-                            object-api-name="User__c"
-                            layout-type="Full"
-                            mode="view">
-                    </lightning-record-form>-->
                 </lightning-layout-item>
-                <div id="test" class="slds-p-horizontal_x-small">
-
-                </div>
             </lightning-card>
         </lightning-layout-item>
 
@@ -63,12 +45,9 @@
                             onsuccess={handleSuccess}>
                     </lightning-record-form>
                 </template>
-
-
             </lightning-card>
         </lightning-layout-item>
     </lightning-layout>
-
 
     <template if:true={changePasswordMode}>
         <div class="demo-only" style="height: 640px;">
@@ -112,11 +91,4 @@
             <div class="slds-backdrop slds-backdrop_open"></div>
         </div>
     </template>
-    <template if:true={loading}>
-        <div class="exampleHolder">
-            <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
-        </div>
-    </template>
-
-
 </template>

@@ -13,15 +13,37 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ManageUsersController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>Utils</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <custom>true</custom>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>User__c.Email__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>User__c.Main_Company__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>User__c.Password__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <layoutAssignments>
         <layout>Company_info__mdt-Company info Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Main_Company__c-Main Company Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>User_Role__c-User Role Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>User__c-User Layout</layout>
@@ -30,6 +52,10 @@
         <apexPage>Home</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
+    <tabVisibilities>
+        <tab>App</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
     <tabVisibilities>
         <tab>Main_Company__c</tab>
         <visibility>DefaultOn</visibility>

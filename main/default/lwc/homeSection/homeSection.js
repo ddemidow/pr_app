@@ -1,5 +1,5 @@
 import { LightningElement, wire, track, api } from 'lwc';
-import invokeAction from '@salesforce/apex/ActionControllerTemplate.invokeAction';
+import invokeCachableAction from '@salesforce/apex/ActionControllerTemplate.invokeCachableAction';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 import USER_OBJECT from '@salesforce/schema/User__c';
@@ -29,8 +29,6 @@ export default class HomeSection extends LightningElement {
     @track passwordValid = false;
     @track message;
 
-    @track loading = false;
-
     enableCompanyCreation(){
         this.creationCompany = true;
     }
@@ -48,7 +46,7 @@ export default class HomeSection extends LightningElement {
 
         var strAction = JSON.stringify(action);
 
-        invokeAction({actions: strAction}).then(
+        invokeCachableAction({actions: strAction}).then(
             results => {
                 console.log('test - ' + results[0]);
 
@@ -69,17 +67,11 @@ export default class HomeSection extends LightningElement {
         this.passwordValid = false;
         this.message = null;
 
-
-        this.loading = false;
-        //this.showNotification('User Saved!', 'success');
+        this.hideSpinner();
     }
 
     handleOldPasswordChange (event) {
         this.oldPassword = event.target.value;
-    }
-
-    testFunction() {
-        console.log(this.template.getElementById('test'));
     }
 
     handleSuccess(event) {
@@ -87,9 +79,7 @@ export default class HomeSection extends LightningElement {
         this.userCompanyId = this.companyId;
         this.creationCompany = false;
 
-        //this.showNotification('Company Saved!', 'success');
-
-        this.loading = false;
+        this.hideSpinner();
     }
 
     showNotification(title, variant) {
@@ -102,8 +92,12 @@ export default class HomeSection extends LightningElement {
         this.dispatchEvent(evt);
     }
 
-    spinner () {
-        this.loading = true;
+    showSpinner () {
+        this.dispatchEvent(new CustomEvent('showspinner'));
+    }
+
+    hideSpinner() {
+        this.dispatchEvent(new CustomEvent('hidespinner'));
     }
 
 }
