@@ -2,7 +2,8 @@ public class Utils
 {
     public enum ActionType
     {
-        USER_LOGIN, CHECK_PASSWORD, GET_USERS_LIST, DELETE_USER
+        USER_LOGIN, CHECK_PASSWORD, GET_USERS_LIST, DELETE_USER, GET_CATEGORIES_LIST, DELETE_CATEGORY, GET_PRODUCT_CONFIGS_LIST,
+        DELETE_PRODUCT_CONFIG
     }
     
     public static Map<String, ActionType> actionMapping {
@@ -15,7 +16,11 @@ public class Utils
                     'user-login' => ActionType.USER_LOGIN,
                     'check-password' => ActionType.CHECK_PASSWORD,
                     'get-users-list' => ActionType.GET_USERS_LIST,
-                    'delete-user' => ActionType.DELETE_USER
+                    'delete-user' => ActionType.DELETE_USER,
+                    'get-categories-list' => ActionType.GET_CATEGORIES_LIST,
+                    'delete-category' => ActionType.DELETE_CATEGORY,
+                    'get-product-configs-list' => ActionType.GET_PRODUCT_CONFIGS_LIST,
+                    'delete-product-config' => ActionType.DELETE_PRODUCT_CONFIG
                 };
             }
             
