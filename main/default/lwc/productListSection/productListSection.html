@@ -1,3 +1,87 @@
 <template>
-    
+    <lightning-card title="All Products" icon-name="utility:opened_folder">
+        <div slot="actions">
+            <template if:false={showFiltersMode}>
+                <lightning-button name="1" slot="actions" icon-name="utility:down" onclick={filtersMode} label="Show Filters"></lightning-button>
+            </template>
+            <templaete if:true={showFiltersMode}>
+                <lightning-button  slot="actions" icon-name="utility:up" onclick={filtersMode} label="Hide Filters"></lightning-button>
+            </templaete>
+        </div>
+
+        <lightning-layout multiple-rows="true" horizontal-align="center">
+            <template for:each={categories} for:item="categoriesLevel">
+                <template for:each={categoriesLevel} for:item="category">
+                    <lightning-layout-item size="1" key={category.Id}>
+                        <lightning-layout class="slds-box slds-p-around_x-small">
+                            <div class="slds-p-right_xx-small">{category.fields.Name.value}</div>
+                            <lightning-input level="0" type="checkbox-button" label="Input One" name="input1" onclick={handlCategoryClick}></lightning-input>
+                        </lightning-layout>
+                    </lightning-layout-item>
+                </template>
+            </template>
+
+            <!--<lightning-layout-item size="1" >
+                <lightning-layout class="slds-box">
+                    Category One
+                    <lightning-input type="checkbox-button" label="Input One" name="input1"></lightning-input>
+                </lightning-layout>
+            </lightning-layout-item>
+            <lightning-layout-item size="1" >
+                <lightning-layout class="slds-box">
+                    Category One
+                    <lightning-input type="checkbox-button" label="Input One" name="input1"></lightning-input>
+                </lightning-layout>
+            </lightning-layout-item>
+            <lightning-layout-item size="1" >
+                <lightning-layout class="slds-box">
+                    Category One
+                    <lightning-input type="checkbox-button" label="Input One" name="input1"></lightning-input>
+                </lightning-layout>
+            </lightning-layout-item>
+            <lightning-layout-item size="1" >
+                <lightning-layout class="slds-box">
+                    Category One
+                    <lightning-input type="checkbox-button" label="Input One" name="input1"></lightning-input>
+                </lightning-layout>
+            </lightning-layout-item>
+            <lightning-layout-item size="1" >
+                <lightning-layout class="slds-box">
+                    Category One
+                    <lightning-input type="checkbox-button" label="Input One" name="input1"></lightning-input>
+                </lightning-layout>
+            </lightning-layout-item>
+            <lightning-layout-item size="1" >
+                <lightning-layout class="slds-box">
+                    Category One
+                    <lightning-input type="checkbox-button" label="Input One" name="input1"></lightning-input>
+                </lightning-layout>
+            </lightning-layout-item>
+            <lightning-layout-item size="1" >
+                <lightning-layout class="slds-box">
+                    Category One
+                    <lightning-input type="checkbox-button" label="Input One" name="input1"></lightning-input>
+                </lightning-layout>
+            </lightning-layout-item>
+            <lightning-layout-item size="1" >
+                <lightning-layout class="slds-box">
+                    Category One
+                    <lightning-input type="checkbox-button" label="Input One" name="input1"></lightning-input>
+                </lightning-layout>
+            </lightning-layout-item>
+            <lightning-layout-item size="1" >
+                <lightning-layout class="slds-box">
+                    Category One
+                    <lightning-input type="checkbox-button" label="Input One" name="input1"></lightning-input>
+                </lightning-layout>
+            </lightning-layout-item>
+-->
+
+
+
+            <lightning-layout-item size="12">
+
+            </lightning-layout-item>
+        </lightning-layout>
+    </lightning-card>
 </template>

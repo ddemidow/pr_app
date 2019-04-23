@@ -29,6 +29,8 @@ export default class ManageProductSection extends LightningElement {
 
     @wire (invokeCachableAction, {actions : '$getCategoriesAction'})
     getCategoriesList(result){
+        console.log('inited');
+
         this.wiredCategoriesResult = result;
 
         if (result.data) {
