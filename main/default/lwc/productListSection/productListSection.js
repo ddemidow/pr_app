@@ -10,19 +10,26 @@ export default class ProductListSection extends LightningElement {
     selectedCategoryIds = new Set();
 
     categoriesStore = new Map();
+    selectedFilters = new Map();
     
     @track showFiltersMode = false;
     @track categoriesToShow = [];
     @track configsToShow = [];
+    @track selectedProducts = [];
+
 
     @wire (getListUi, {objectApiName: CATEGORY_OBJECT, listViewApiName: "Top_Level"})
     retrievedTopCategories ({data, error}) {
+        //console.log("retrieve");
+
         if (data) {
             //console.log(data.records.records);
 
+            //console.log("retrieve1");
+
             let tests = [];
 
-            data.records.records.forEach((currentCategory, index)=>{
+            data.records.records.forEach((currentCategory, index) => {
                 //console.log(currentCategory);
                 let test = this.configurateCategoryWrapper(currentCategory.fields.Id.value, currentCategory.fields.Name.value, 0, false);
                 //console.log("test " + test );
@@ -42,10 +49,11 @@ export default class ProductListSection extends LightningElement {
             console.log("configs");
             console.log(data);
             console.log(data.records.records);
-            data.records.records.forEach((currentConfig, index)=>{
-                console.log(currentConfig.fields.Id.value);
 
-                this.configsToShow.push(this.configurateConfigWrapper(index, currentConfig.fields.Name.value,
+            data.records.records.forEach((currentConfig, index)=>{
+                console.log(currentConfig.fields);
+
+                this.configsToShow.push(this.configurateConfigWrapper(index, currentConfig.fields.Api_Name__c.value,
                 currentConfig.fields.Type__c.value));
             });
         } else {
@@ -63,8 +71,6 @@ export default class ProductListSection extends LightningElement {
     }
 
     handleCategoryClick(event) {
-        console.log(event.target);
-        //console.log(event.target.children[1].id);
         var element = event.target;
 
         let level = element.name;
@@ -87,7 +93,7 @@ export default class ProductListSection extends LightningElement {
             if (currentCategory.id === id) {
                 currentCategory.iconName = "utility:chevronright";
             } else {
-            currentCategory.iconName = "utility:down";
+                currentCategory.iconName = "utility:down";
             }
         });
 
@@ -95,7 +101,6 @@ export default class ProductListSection extends LightningElement {
         console.log(this.selectedCategoryIds);
 
         this.categoriesToShow.splice(level+1, this.categoriesToShow.length-1);
-
 
         let categoriesRequestAction = JSON.stringify(
             [{className: this.controllerName, action: "get-child-categories", args: {categoryId: id}}]
@@ -123,13 +128,37 @@ export default class ProductListSection extends LightningElement {
         });
     }
 
-    handleFilterChange(event) {
-        console.log(event.target);
+    retrieveRecords() {
+        this.showSpinner();
+
+        console.log(Array.from(this.selectedFilters));
+
+        let retrieveProductsAction = JSON.stringify(
+            [{className: this.controllerName, action: "retrieve-products", args: {categoryIds: this.selectedCategoryIds, filters: Array.from(this.selectedFilters)}}]
+        );
+
+        invokeCachableAction({actions: retrieveProductsAction}).then(
+            (products) => {
+                this.selectedProducts = products;
+                this.hideSpinner();
+            }
+        ).catch(error => {
+            console.log(JSON.stringify(error));
+        });
     }
 
-    test() {
-        console.log("test");
+    handleFilterChange(event) {
+        console.log(event.target);
+
+        if (event.target.value) {
+            this.selectedFilters.set(event.target.name, event.target.value);
+        } else {
+            this.selectedFilters.delete(event.target.name);
+        }
+
+        console.log(this.selectedFilters);
     }
+
 
     configurateCategoryWrapper(categoryId, categoryName, level, value) {
         return {level: level, name: categoryName, id: categoryId, value: value, iconName: "utility:down"};

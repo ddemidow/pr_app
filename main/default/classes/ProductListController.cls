@@ -10,12 +10,16 @@ public with sharing class ProductListController implements Callable
             {
                 return this.getChildCategories((String)args.get('categoryId'));
             }
+            when RECIEVE_PRODUCTS
+            {
+                return this.retrieveProducts((String)args.get('categoryIds'), (String)args.get('filters'));
+            }
             when else
             {
                 return null;
             }
         }
-}
+    }
     
     private List<Category__c> getChildCategories(Id masterId)
     {
@@ -26,5 +30,19 @@ public with sharing class ProductListController implements Callable
         ];
         
         return categories;
+    }
+    
+    private List<List<Product_Field__c>> retrieveProducts(String filtersSer, String categoryIdsSer)
+    {
+        List<FilterInstanse> filters = (List<FilterInstanse>)JSON.deserialize(filtersSer, List<FilterInstanse>.class);
+        Set<Id> categoryIds = (Set<Id>)JSON.deserialize(categoryIdsSer, Set<Id>.class);
+        
+        return ProductsSearchService.searchProducts(categoryIds, filters);
+    }
+    
+    public class FilterInstanse
+    {
+        public String key;
+        public String value;
     }
 }

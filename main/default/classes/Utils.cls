@@ -1,9 +1,11 @@
 public class Utils
 {
+    public static final Integer APOSTROPHE_CHAR_NUMBER = 39;
+    
     public enum ActionType
     {
         USER_LOGIN, CHECK_PASSWORD, GET_USERS_LIST, DELETE_USER, GET_CATEGORIES_LIST, DELETE_CATEGORY, GET_PRODUCT_CONFIGS_LIST,
-        DELETE_PRODUCT_CONFIG, GET_CHILD_CATEGORIES
+        DELETE_PRODUCT_CONFIG, GET_CHILD_CATEGORIES, RECIEVE_PRODUCTS
     }
     
     public static Map<String, ActionType> actionMapping {
@@ -21,7 +23,8 @@ public class Utils
                     'delete-category' => ActionType.DELETE_CATEGORY,
                     'get-product-configs-list' => ActionType.GET_PRODUCT_CONFIGS_LIST,
                     'delete-product-config' => ActionType.DELETE_PRODUCT_CONFIG,
-                    'get-child-categories' => ActionType.GET_CHILD_CATEGORIES
+                    'get-child-categories' => ActionType.GET_CHILD_CATEGORIES,
+                    'recieve-products' => ActionType.RECIEVE_PRODUCTS
                 };
             }
             
