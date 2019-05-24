@@ -95,8 +95,8 @@
                     <tbody>
                     <template for:each={selectedProducts} for:item="product" for:index="index">
                         <tr class="slds-hint-parent" key={product}>
-                            <template for:each={product} for:item=field>
-                                <th data-label="Name" scope="row" key={field.Id}>
+                            <template for:each={product} for:item="field">
+                                <th data-label={field.Product_Configuration__r.Api_Name__c} scope="row" key={field.Id}>
                                     <div class="slds-truncate" title={field.Value__c}>{field.Value__c}</div>
                                 </th>
                             </template>

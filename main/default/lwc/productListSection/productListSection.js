@@ -134,12 +134,19 @@ export default class ProductListSection extends LightningElement {
         console.log(Array.from(this.selectedFilters));
 
         let retrieveProductsAction = JSON.stringify(
-            [{className: this.controllerName, action: "retrieve-products", args: {categoryIds: this.selectedCategoryIds, filters: Array.from(this.selectedFilters)}}]
+            [{className: this.controllerName, action: "retrieve-products",
+                args: {
+                    categoryIds: JSON.stringify(Array.from(this.selectedCategoryIds)),
+                    filters: JSON.stringify(Array.from(this.selectedFilters))
+                }
+            }]
         );
 
         invokeCachableAction({actions: retrieveProductsAction}).then(
             (products) => {
-                this.selectedProducts = products;
+                console.log(products);
+
+                this.selectedProducts = products[0];
                 this.hideSpinner();
             }
         ).catch(error => {

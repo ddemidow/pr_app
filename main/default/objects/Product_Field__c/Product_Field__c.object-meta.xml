@@ -54,9 +54,10 @@
     <enableStreamingApi>true</enableStreamingApi>
     <label>Product Field</label>
     <nameField>
+        <displayFormat>F-{000000}</displayFormat>
         <label>Product Field Name</label>
         <trackHistory>false</trackHistory>
-        <type>Text</type>
+        <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Product Fields</pluralLabel>
     <searchLayouts/>

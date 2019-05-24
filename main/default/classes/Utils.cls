@@ -24,7 +24,7 @@ public class Utils
                     'get-product-configs-list' => ActionType.GET_PRODUCT_CONFIGS_LIST,
                     'delete-product-config' => ActionType.DELETE_PRODUCT_CONFIG,
                     'get-child-categories' => ActionType.GET_CHILD_CATEGORIES,
-                    'recieve-products' => ActionType.RECIEVE_PRODUCTS
+                    'retrieve-products' => ActionType.RECIEVE_PRODUCTS
                 };
             }
             

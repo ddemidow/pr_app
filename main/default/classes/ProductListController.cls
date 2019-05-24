@@ -32,9 +32,12 @@ public with sharing class ProductListController implements Callable
         return categories;
     }
     
-    private List<List<Product_Field__c>> retrieveProducts(String filtersSer, String categoryIdsSer)
+    private List<List<Product_Field__c>> retrieveProducts(String categoryIdsSer, String filtersSer)
     {
-        List<FilterInstanse> filters = (List<FilterInstanse>)JSON.deserialize(filtersSer, List<FilterInstanse>.class);
+        System.debug(filtersSer);
+        System.debug(categoryIdsSer);
+
+        List<List<String>> filters = (List<List<String>>)JSON.deserialize(filtersSer, List<List<String>>.class);
         Set<Id> categoryIds = (Set<Id>)JSON.deserialize(categoryIdsSer, Set<Id>.class);
         
         return ProductsSearchService.searchProducts(categoryIds, filters);
