@@ -45,5 +45,35 @@ public class Utils
         return actionType;
     }
     
+    public static Map<String, SObject> genereteMap(List<SObject> records, String keyFieldName, String sobjectTypeName, String namespace)
+    {
+        Map<String, SObject> result;
+        
+        if (namespace != null)
+        {
+            sobjectTypeName = 'Map<String,' + Type.forName(namespace, sobjectTypeName) + '>';
+        }
+        else
+        {
+            sobjectTypeName = 'Map<String,' + Type.forName(sobjectTypeName) + '>';
+        }
+        
+        if (sobjectTypeName != null)
+        {
+            result  = (Map<String, SObject>)Type.forName(sobjectTypeName).newInstance();
+            
+            for (SObject currentRcord : records)
+            {
+                result.put(String.valueOf(currentRcord.get(keyFieldName)), currentRcord);
+            }
+        }
+        else
+        {
+            result = null;
+        }
+        
+        return result;
+    }
+    
     public class ActionDoesNotSupportedException extends Exception {}
 }

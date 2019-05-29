@@ -20,19 +20,11 @@ export default class ProductListSection extends LightningElement {
 
     @wire (getListUi, {objectApiName: CATEGORY_OBJECT, listViewApiName: "Top_Level"})
     retrievedTopCategories ({data, error}) {
-        //console.log("retrieve");
-
         if (data) {
-            //console.log(data.records.records);
-
-            //console.log("retrieve1");
-
             let tests = [];
 
             data.records.records.forEach((currentCategory, index) => {
-                //console.log(currentCategory);
                 let test = this.configurateCategoryWrapper(currentCategory.fields.Id.value, currentCategory.fields.Name.value, 0, false);
-                //console.log("test " + test );
 
                 tests.push(test);
             });
@@ -133,11 +125,22 @@ export default class ProductListSection extends LightningElement {
 
         console.log(Array.from(this.selectedFilters));
 
+        let filters = [];
+
+        this.selectedFilters.forEach((value, key, map) => {
+            let element = [key];
+            element = element.concat(value);
+
+            filters.push(element);
+        });
+
+        console.log(filters);
+
         let retrieveProductsAction = JSON.stringify(
             [{className: this.controllerName, action: "retrieve-products",
                 args: {
                     categoryIds: JSON.stringify(Array.from(this.selectedCategoryIds)),
-                    filters: JSON.stringify(Array.from(this.selectedFilters))
+                    filters: JSON.stringify(filters)
                 }
             }]
         );
@@ -156,11 +159,37 @@ export default class ProductListSection extends LightningElement {
 
     handleFilterChange(event) {
         console.log(event.target);
+        console.log(event.target.name);
+        console.log(event.target.value);
 
         if (event.target.value) {
-            this.selectedFilters.set(event.target.name, event.target.value);
+            if (!this.selectedFilters.get(event.target.name)) {
+                this.selectedFilters.set(event.target.name, [event.target.type]);
+            }
+
+            if (event.target.placeholder == "FROM") {
+                this.selectedFilters.get(event.target.name)[1] = event.target.value;
+            } else if (event.target.placeholder == "TO") {
+                this.selectedFilters.get(event.target.name)[2] = event.target.value;
+            } else {
+                this.selectedFilters.get(event.target.name)[1] = event.target.value;
+            }
         } else {
-            this.selectedFilters.delete(event.target.name);
+            if (event.target.placeholder == "FROM") {
+                this.selectedFilters.get(event.target.name)[1] = null;
+
+                if (this.selectedFilters.get(event.target.name)[2] == null) {
+                    this.selectedFilters.delete(event.target.name);
+                }
+            } else if (event.target.placeholder == "TO") {
+                this.selectedFilters.get(event.target.name)[2] = null;
+
+                if (this.selectedFilters.get(event.target.name)[1] == null) {
+                    this.selectedFilters.delete(event.target.name);
+                }
+            } else {
+                this.selectedFilters.delete(event.target.name);
+            }
         }
 
         console.log(this.selectedFilters);
@@ -174,11 +203,13 @@ export default class ProductListSection extends LightningElement {
     configurateConfigWrapper(index, configName, configType, defaultValue) {
         let inputType;
         let isSelect;
+        let isNumber;
 
         switch(configType) {
             case "Number":
                 inputType = "number";
                 isSelect = false;
+                isNumber = true;
                 break;
             case "Text":
                 inputType = "text";
@@ -195,7 +226,7 @@ export default class ProductListSection extends LightningElement {
         console.log(inputType);
         console.log(isSelect);
 
-        return {index: index, name: configName, type: configType, isSelect: isSelect};
+        return {index: index, name: configName, type: configType, isSelect: isSelect, isNumber: isNumber};
     }
 
     showSpinner () {

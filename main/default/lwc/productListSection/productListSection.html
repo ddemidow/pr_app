@@ -62,11 +62,18 @@
                                 <template for:each={configsToShow} for:item="config">
                                     <ol class="slds-list_vertical slds-list_vertical-space" key={config.id}>
                                         <li class="slds-item slds-hint-parent">
-                                            <template if:true={config.isSelect}>
-
+                                            <template if:true={config.isNumber}>
+                                                <lightning-layout>
+                                                    <lightning-layout-item size="6" multiple-rows="true">
+                                                        <lightning-input name={config.name} label={config.name} isnumber={config.isNumber} type={config.type} onchange={handleFilterChange} placeholder="FROM"></lightning-input>
+                                                    </lightning-layout-item>
+                                                    <lightning-layout-item size="6">
+                                                        <lightning-input name={config.name} label="Between" isnumber={config.isNumber} type={config.type} onchange={handleFilterChange} placeholder="TO"></lightning-input>
+                                                    </lightning-layout-item>
+                                                </lightning-layout>
                                             </template>
-                                            <template if:false={config.isSelect}>
-                                                <lightning-input name={config.name} label={config.name} type={config.type} onchange={handleFilterChange}></lightning-input>
+                                            <template if:false={config.isNumber}>
+                                                <lightning-input name={config.name} label={config.name} isnumber={config.isNumber} type={config.type} onchange={handleFilterChange}></lightning-input>
                                             </template>
                                         </li>
                                     </ol>
@@ -93,12 +100,13 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <template for:each={selectedProducts} for:item="product" for:index="index">
+                    <template for:each={selectedProducts} for:item="product">
                         <tr class="slds-hint-parent" key={product}>
                             <template for:each={product} for:item="field">
-                                <th data-label={field.Product_Configuration__r.Api_Name__c} scope="row" key={field.Id}>
+                                <td   key={field.Id}>
+
                                     <div class="slds-truncate" title={field.Value__c}>{field.Value__c}</div>
-                                </th>
+                                </td>
                             </template>
                         </tr>
                     </template>

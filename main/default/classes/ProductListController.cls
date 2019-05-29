@@ -32,7 +32,7 @@ public with sharing class ProductListController implements Callable
         return categories;
     }
     
-    private List<List<Product_Field__c>> retrieveProducts(String categoryIdsSer, String filtersSer)
+    private  List<List<Product_Field__c>> retrieveProducts(String categoryIdsSer, String filtersSer)
     {
         System.debug(filtersSer);
         System.debug(categoryIdsSer);
