@@ -74,6 +74,83 @@ public class Utils
         
         return result;
     }
+
+     /**
+     * @genereteMap: To generate map and store records by custom key.
+     * @param: records list of target records
+     * @param: keyFieldNames a list of keysets - field names
+     * @param: sobjectTypeName name of target sobject
+     * @param: namespace name of object namespace
+     * @returnType: Map<String, SObject>
+     */
+    public static Map<String, SObject> genereteMap(List<SObject> records, List<List<String>> keyFieldNames, String sobjectTypeName, String namespace)
+    {
+        Map<String, SObject> result;
+
+        if (namespace != null)
+        {
+            sobjectTypeName = 'Map<String,' + Type.forName(namespace, sobjectTypeName) + '>';
+        }
+        else
+        {
+            sobjectTypeName = 'Map<String,' + Type.forName(sobjectTypeName) + '>';
+        }
+
+        if (sobjectTypeName != null)
+        {
+            result = (Map<String, SObject>) Type.forName(sobjectTypeName).newInstance();
+
+            for (SObject currentRecord : records)
+            {
+                for (List<String> currentFieldSet : keyFieldNames)
+                {
+                    result.put(generateRecordKey(currentFieldSet, currentRecord), currentRecord);
+                }
+            }
+        }
+        else
+        {
+            result = null;
+        }
+
+        return result;
+    }
+
+     /**
+     * @generateRecordKey: To generate unique key for record based on field values
+     * @params: fieldKeys
+     * @params: record
+     * @returnType: String
+     */
+    public static String generateRecordKey(List<String> fieldKeys, SObject record)
+    {
+        String result = '';
+
+        for (String currentKeyField : fieldKeys)
+        {
+            result += 'KeyField:' + record.get(currentKeyField) + ';';
+        }
+
+        return result;
+    }
+
+	 /**
+     * @logException: To log exception
+     * @params: ex
+     * @returnType:
+     */
+    public static void logException(Exception ex)
+    {
+        System.debug('Exception log.');
+        System.debug('Exception message: ' + ex.getMessage());
+        System.debug('Exception stack trace: ' + ex.getStackTraceString());
+    }
+
+    @future
+    public static void notifyUsers()
+    {
+
+    }
     
     public class ActionDoesNotSupportedException extends Exception {}
 }

@@ -54,7 +54,7 @@ export default class ProductListSection extends LightningElement {
     }
 
     connectedCallback() {
-        this.showSpinner();
+        //this.showSpinner();
     }
 
     filtersMode() {
