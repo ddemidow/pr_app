@@ -1,0 +1,69 @@
+<template>
+    <template if:true={user}>
+        <lightning-layout >
+            <lightning-layout-item size="12">
+                <lightning-card variant="narrow" title="Start Your Working" icon-name="utility:settings">
+                    <lightning-button label="Logout" slot="actions" onclick={handleLogout}></lightning-button>
+
+                    <lightning-tabset>
+                        <lightning-tab label="Home">
+                            <c-home-section user-id={user.Id} company-id={user.Main_Company__c} onshowspinner={showSpinner} onhidespinner={hideSpinner}></c-home-section>
+                        </lightning-tab>
+
+                        <lightning-tab label="Manage Users">
+                            <c-manage-users-section onshowspinner={showSpinner} onhidespinner={hideSpinner}></c-manage-users-section>
+                        </lightning-tab>
+
+                        <lightning-tab label="Manage Product">
+                           <c-manage-product-section onshowspinner={showSpinner} onhidespinner={hideSpinner}></c-manage-product-section>
+                        </lightning-tab>
+
+                        <lightning-tab label="Products List">
+                            <c-product-list-section onshowspinner={showSpinner} onhidespinner={hideSpinner}></c-product-list-section>
+                        </lightning-tab>
+
+                        <lightning-tab label="Manage Layout">
+                            Manage Layout Developing...
+                        </lightning-tab>
+
+                        <lightning-tab label="Incoming orders">
+                            Incoming orders Developing...
+                        </lightning-tab>
+
+                        <lightning-tab label="Incoming leads">
+                            Incoming leads Developing...
+                        </lightning-tab>
+                    </lightning-tabset>
+                </lightning-card>
+            </lightning-layout-item>
+        </lightning-layout>
+    </template>
+    <template if:false={user}>
+        <lightning-layout horizontal-align="center">
+        <lightning-layout-item size="6">
+            <lightning-card variant="narrow" title="Test Login" icon-name="standard:avatar">
+                <div class="slds-p-horizontal_x-small" style="color: red">
+                    {uiMessage}
+                </div>
+                <lightning-input type="text" label="Username" value={username} onchange={handleUsernameChange}
+                                 class="slds-p-horizontal_x-small"></lightning-input>
+                <lightning-input type="password" label="Password" value={password} onchange={handlePasswordChange}
+                                 class="slds-p-horizontal_x-small"></lightning-input>
+                <div slot="footer">
+                    <center>
+                        <lightning-button label="Sign In" variant="brand" class="slds-p-right_x-small"
+                                          onclick={handleLogin}></lightning-button>
+                        <lightning-button label="Forgot Password" variant="base"
+                                          class="slds-p-left_x-small"></lightning-button>
+                    </center>
+                </div>
+            </lightning-card>
+        </lightning-layout-item>
+        </lightning-layout>
+    </template>
+    <template if:true={loading}>
+        <div class="exampleHolder">
+            <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+        </div>
+    </template>
+</template>

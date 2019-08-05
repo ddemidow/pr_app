@@ -1,0 +1,128 @@
+<template>
+    <lightning-layout horizontal-align="center">
+        <lightning-layout-item size="12">
+            <lightning-card title="All Users" icon-name="utility:resource_capacity">
+                <lightning-button slot="actions" label="Create New" onclick={createUser}></lightning-button>
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                    <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Name">Name</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Username">Username</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Email">Email</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Role">Role</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Phone">Phone</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Actions">Actions</div>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={users} for:item="user">
+                            <tr class="slds-hint-parent" key={user.Id}>
+                                <th data-label="Name" scope="row">
+                                    <div class="slds-truncate" title={user.Name}>{user.Name}</div>
+                                </th>
+                                <td data-label="Username">
+                                    <div class="slds-truncate" title={user.Username__c}>{user.Username__c}</div>
+                                </td>
+                                <td data-label="Email">
+                                    <div class="slds-truncate" title={user.Email__c}>{user.Email__c}</div>
+                                </td>
+                                <td data-label="Role">
+                                    <div class="slds-truncate" title={user.User_Role__r.Name}>{user.User_Role__r.Name}</div>
+                                </td>
+                                <td data-label="Phone">
+                                    <div class="slds-truncate" title="123-123-123">123-123-123</div>
+                                </td>
+                                <td data-label="Actions">
+                                    <a id={user.Id} onclick={deleteUser} class="slds-p-right_small">Remove</a>
+                                    <a id={user.Id} onclick={editUser} class="slds-p-right_small">Edit</a>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </lightning-card>
+        </lightning-layout-item>
+    </lightning-layout>
+
+    <template if:true={modalEnabled}>
+        <div class="demo-only" style="height: 640px;">
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                            <lightning-icon icon-name="utility:close"></lightning-icon>
+                            <span class="slds-assistive-text">Close</span>
+                        </button>
+                        <template if:true={userEditMode}>
+                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Edit User</h2>
+                        </template>
+                        <template if:true={userDeleteMode}>
+                            <h2 id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate">Delete User</h2>
+                        </template>
+                        <template if:true={userCreateMode}>
+                            <h2 id="modal-heading-03" class="slds-text-heading_medium slds-hyphenate">Create User</h2>
+                        </template>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <template if:true={userEditMode}>
+                            <lightning-record-edit-form object-api-name="User__c" record-id={selectedUserId} onsuccess={handleUserUpdated}>
+                                <lightning-messages></lightning-messages>
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_2-of-2">
+                                        <lightning-input-field field-name="Name"></lightning-input-field>
+                                        <lightning-input-field field-name="Username__c"></lightning-input-field>
+                                        <lightning-input-field field-name="Email__c"></lightning-input-field>
+
+                                        <div class="slds-p-around_x-small slds-grid slds-grid_align-center">
+                                            <lightning-button type="submit" variant="brand" label="Save"></lightning-button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </lightning-record-edit-form>
+                        </template>
+                        <template if:true={userDeleteMode}>
+                            <center>
+                                <p>Are you sure?</p>
+
+                                <lightning-button label="Yes" onclick={deleteUserRecord}></lightning-button>
+                                <lightning-button label="No" onclick={closeModal}></lightning-button>
+                            </center>
+                        </template>
+                        <template if:true={userCreateMode}>
+                            <lightning-record-edit-form object-api-name="User__c" onsuccess={handleUserCreated}>
+                                <lightning-messages></lightning-messages>
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_2-of-2">
+                                        <lightning-input-field field-name="Name"></lightning-input-field>
+                                        <lightning-input-field field-name="Username__c"></lightning-input-field>
+                                        <lightning-input-field field-name="Email__c"></lightning-input-field>
+                                        <lightning-input-field field-name="User_Role__c"></lightning-input-field>
+                                        <lightning-input-field field-name="Main_Company__c"></lightning-input-field>
+
+                                        <div class="slds-p-around_x-small slds-grid slds-grid_align-center">
+                                            <lightning-button type="submit" variant="brand" label="Create New" onclick={showSpinner}></lightning-button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </lightning-record-edit-form>
+                        </template>
+                    </div>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </div>
+    </template>
+</template>

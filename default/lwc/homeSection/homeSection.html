@@ -1,0 +1,94 @@
+<template>
+    <lightning-layout multiple-rows="true">
+        <lightning-layout-item size="5" class="slds-p-left_large">
+            <lightning-card title="Personal Information" icon-name="utility:user">
+                <lightning-button label="Change Password" slot="actions" onclick={replaceChangePasswordMode}></lightning-button>
+                <lightning-layout-item size="12">
+                    <lightning-record-edit-form object-api-name={userObject} record-id={userId} onsuccess={handleUserUpdated}>
+                        <lightning-messages></lightning-messages>
+                        <div class="slds-grid">
+                            <div class="slds-col slds-size_2-of-2">
+                                <lightning-input-field field-name={nameField}></lightning-input-field>
+                                <lightning-input-field field-name={usernameField}></lightning-input-field>
+                                <lightning-input-field field-name={roleField}></lightning-input-field>
+                                <lightning-input-field field-name={companyField} value={userCompanyId}></lightning-input-field>
+
+                                <div class="slds-p-around_x-small slds-grid slds-grid_align-center">
+                                    <lightning-button type="submit" variant="brand" label="Save" onclick={showSpinner}></lightning-button>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-record-edit-form>
+                </lightning-layout-item>
+            </lightning-card>
+        </lightning-layout-item>
+
+        <lightning-layout-item size="5" class="slds-p-left_large">
+            <lightning-card title="Company Information" icon-name="utility:company">
+                <template if:false={companyId}>
+                    <lightning-button label="Create" slot="actions" onclick={enableCompanyCreation}></lightning-button>
+                </template>
+                <template if:true={companyId}>
+                    <lightning-record-form
+                            record-id={companyId}
+                            object-api-name="Main_Company__c"
+                            layout-type="Full"
+                            mode="view"
+                            onsuccess={handleSuccess}>
+                    </lightning-record-form>
+                </template>
+                <template if:true={creationCompany}>
+                    <lightning-record-form
+                            object-api-name="Main_Company__c"
+                            layout-type="Full"
+                            mode="edit"
+                            onsuccess={handleSuccess}>
+                    </lightning-record-form>
+                </template>
+            </lightning-card>
+        </lightning-layout-item>
+    </lightning-layout>
+
+    <template if:true={changePasswordMode}>
+        <div class="demo-only" style="height: 640px;">
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close">
+
+                            <span class="slds-assistive-text">Close</span>
+                        </button>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Change Password</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <template if:false={passwordValid}>
+                            <lightning-input type="password" label="Old Password" value={oldPassword} onchange={handleOldPasswordChange}></lightning-input>
+                            <div class="slds-grid">
+                                <div class="slds-col slds-size_2-of-2">
+                                    {message}
+                                </div>
+                            </div>
+                            <lightning-button label="Check" onclick={isPasswordValid}></lightning-button>
+                        </template>
+                        <template if:true={passwordValid}>
+                            <lightning-record-edit-form object-api-name={userObject} record-id={userId} onsuccess={handleUserUpdated}>
+                                <lightning-messages></lightning-messages>
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_2-of-2">
+                                        <lightning-input-field field-name={passwordField}></lightning-input-field>
+
+                                        <div class="slds-p-around_x-small slds-grid slds-grid_align-center">
+                                            <lightning-button type="submit" variant="brand" label="Save"></lightning-button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </lightning-record-edit-form>
+                        </template>
+                    </div>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </div>
+    </template>
+</template>

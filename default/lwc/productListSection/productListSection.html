@@ -1,0 +1,119 @@
+<template>
+    <lightning-card title="All Products" icon-name="utility:opened_folder">
+        <div slot="actions">
+            <lightning-button  slot="actions"  label="New Product"></lightning-button>
+            <template if:false={showFiltersMode}>
+                <lightning-button name="1" slot="actions" icon-name="utility:down" onclick={filtersMode} label="Show Filters"></lightning-button>
+            </template>
+            <templaete if:true={showFiltersMode}>
+                <lightning-button  slot="actions" icon-name="utility:up" onclick={filtersMode} label="Hide Filters"></lightning-button>
+            </templaete>
+        </div>
+
+        <lightning-layout multiple-rows="true" horizontal-align="center">
+            <template if:true={showFiltersMode}>
+                <template for:each={categoriesToShow} for:item="categoriesLevel">
+                    <template for:each={categoriesLevel.data} for:item="category">
+                        <lightning-layout-item  size="2" key={category.Id} class="slds-p-horizontal_xx-small">
+
+                            <div class="slds-p-around_medium lgc-bg slds-box">
+                                <lightning-layout>
+                                    <lightning-layout-item size="8">
+                                        <lightning-tile label={category.name} id={category.id} name={category.level}  >
+                                        </lightning-tile>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item size="2" class="slds-p-horizontal_xx-small">
+                                        <lightning-button-icon icon-name={category.iconName}
+                                                               id={category.id}
+                                                               name={category.level}
+                                                               onclick={handleCategoryClick}
+                                                               alternative-text="expand">
+
+                                        </lightning-button-icon>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item size="2" class="slds-p-horizontal_xx-small">
+                                        <lightning-input id={category.id}
+                                                         type="checkbox-button"
+                                                         label=""
+                                                         name={category.level}
+                                                         checked={category.value}
+                                                         onchange={handleCategoryClick}>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+                            </div>
+                        </lightning-layout-item>
+                    </template>
+
+                    <lightning-layout-item size="12" key={categoriesLevel.index}>
+                        <div class="slds-p-around_x-small"></div>
+                    </lightning-layout-item>
+                </template>
+            </template>
+
+            <template if:true={showFiltersMode}>
+                <lightning-layout-item size="4">
+                    <div class="slds-panel slds-size_medium slds-panel_docked slds-panel_docked-right slds-is-open" aria-hidden="false">
+                        <div class="slds-panel__header">
+                            <h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="Filter">Filter</h2>
+                        </div>
+                        <div class="slds-panel__body">
+                            <div class="slds-filters">
+                                <template for:each={configsToShow} for:item="config">
+                                    <ol class="slds-list_vertical slds-list_vertical-space" key={config.id}>
+                                        <li class="slds-item slds-hint-parent">
+                                            <template if:true={config.isNumber}>
+                                                <lightning-layout>
+                                                    <lightning-layout-item size="6" multiple-rows="true">
+                                                        <lightning-input name={config.name} label={config.name} isnumber={config.isNumber} type={config.type} onchange={handleFilterChange} placeholder="FROM"></lightning-input>
+                                                    </lightning-layout-item>
+                                                    <lightning-layout-item size="6">
+                                                        <lightning-input name={config.name} label="Between" isnumber={config.isNumber} type={config.type} onchange={handleFilterChange} placeholder="TO"></lightning-input>
+                                                    </lightning-layout-item>
+                                                </lightning-layout>
+                                            </template>
+                                            <template if:false={config.isNumber}>
+                                                <lightning-input name={config.name} label={config.name} isnumber={config.isNumber} type={config.type} onchange={handleFilterChange}></lightning-input>
+                                            </template>
+                                        </li>
+                                    </ol>
+                                </template>
+                            </div>
+                        </div>
+
+                        <div style="text-align: center">
+                            <lightning-button label="Search" onclick={retrieveRecords}></lightning-button>
+                        </div>
+                    </div>
+                </lightning-layout-item>
+            </template>
+            <lightning-layout-item size="8">
+
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                    <thead>
+                    <tr class="slds-line-height_reset">
+                        <template for:each={configsToShow} for:item="config">
+                            <th class="" scope="col" key={config.id}>
+                                <div class="slds-truncate" title={config.name}>{config.name}</div>
+                            </th>
+                        </template>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <template for:each={selectedProducts} for:item="product">
+                        <tr class="slds-hint-parent" key={product}>
+                            <template for:each={product} for:item="field">
+                                <td   key={field.Id}>
+
+                                    <div class="slds-truncate" title={field.Value__c}>{field.Value__c}</div>
+                                </td>
+                            </template>
+                        </tr>
+                    </template>
+                    </tbody>
+                </table>
+
+            </lightning-layout-item>
+        </lightning-layout>
+    </lightning-card>
+</template>

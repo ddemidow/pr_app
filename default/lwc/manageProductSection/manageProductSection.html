@@ -1,0 +1,159 @@
+<template>
+    <lightning-card title="Product Configuration" icon-name="utility:cart">
+        <lightning-layout  multiple-rows="true">
+            <lightning-layout-item size="6">
+                <lightning-card title="Customize Product" icon-name="utility:custom_apps">
+                    <lightning-button name="newConfig" label="Create New Property" slot="actions" onclick={enableModal}></lightning-button>
+
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-border_right">
+                        <thead>
+                        <tr class="slds-line-height_reset">
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Name">Name</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Type">Type</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Description">Description</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Actions">Actions</div>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <template for:each={configs} for:item="config">
+                            <tr class="slds-hint-parent" key={config.Id}>
+                                <th data-label="Name" scope="row">
+                                    <div class="slds-truncate" title={config.Name}>{config.Name}</div>
+                                </th>
+                                <th data-label="Type" scope="row">
+                                    <div class="slds-truncate" title={config.Name}>{config.Type__c}</div>
+                                </th>
+                                <th data-label="Description" scope="row">
+                                    <div class="slds-truncate" title={config.Name}>{config.Description__c}</div>
+                                </th>
+                                <td data-label="Actions">
+                                    <a name="deleteConfig" id={config.Id} onclick={enableModal} class="slds-p-right_small">Remove</a>
+                                    <a name="editConfig" id={config.Id} onclick={enableModal} class="slds-p-right_small">Edit</a>
+                                </td>
+                            </tr>
+                        </template>
+                        </tbody>
+                    </table>
+                </lightning-card>
+            </lightning-layout-item>
+            <lightning-layout-item size="6">
+                <lightning-card title="Product Categories" icon-name="utility:edit_form">
+                    <lightning-button name="newCategory" label="New" slot="actions" onclick={enableModal}></lightning-button>
+
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-border_left">
+                        <thead>
+                        <tr class="slds-line-height_reset">
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Name">Name</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Master">Master</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Actions">Actions</div>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <template for:each={categories} for:item="category">
+                            <tr class="slds-hint-parent" key={category.Id}>
+                                <th data-label="Name" scope="row">
+                                    <div class="slds-truncate" title={category.Name}>{category.Name}</div>
+                                </th>
+                                <td data-label="Username">
+                                    <div class="slds-truncate" title={category.Master_Category__c}>
+                                        <template if:true={category.Master_Category__c}>
+                                            {category.Master_Category__r.Name}
+                                        </template>
+                                        <template if:false={category.Master_Category__c}>
+                                            None
+                                        </template>
+                                    </div>
+                                </td>
+                                <td data-label="Actions">
+                                    <a name="deleteCategory" id={category.Id} onclick={enableModal} class="slds-p-right_small">Remove</a>
+                                    <a name="editCategory" id={category.Id} onclick={enableModal} class="slds-p-right_small">Edit</a>
+                                </td>
+                            </tr>
+                        </template>
+                        </tbody>
+                    </table>
+                </lightning-card>
+            </lightning-layout-item>
+            <!--<lightning-layout-item size="6">
+                <lightning-card title="Product List" icon-name="utility:database"></lightning-card>
+            </lightning-layout-item>-->
+        </lightning-layout>
+    </lightning-card>
+
+    <template if:true={modalEnabled}>
+        <div class="demo-only" style="height: 640px;">
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                            <lightning-icon icon-name="utility:close"></lightning-icon>
+                            <span class="slds-assistive-text">Close</span>
+                        </button>
+                        <!--<template if:true={modifyMode}>-->
+                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{currentLDS_Name}</h2>
+                        <!--</template>-->
+                       <!-- <template if:true={categoryDeleteMode}>
+                            <h2 id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate">Delete Category</h2>
+                        </template>-->
+
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <template if:true={modifyMode}>
+                            <lightning-record-edit-form record-id={currentLDS_Id} object-api-name={currentLDS_Sobject} onsuccess={refreshLists}>
+                                <lightning-messages></lightning-messages>
+
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_2-of-2">
+                                        <template for:each={currentLDS_Fields} for:item="field">
+                                            <div key={field}>
+                                                <lightning-input-field field-name={field}></lightning-input-field>
+                                            </div>
+                                        </template>
+
+                                        <div class="slds-p-around_x-small slds-grid slds-grid_align-center">
+                                            <lightning-button type="submit" variant="brand" label="Save" onclick={showSpinner}></lightning-button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </lightning-record-edit-form>
+                        </template>
+
+                        <template if:true={categoryDeleteMode}>
+                            <center>
+                                <p>Are you sure? All sub categories will be deleted.</p>
+
+                                <lightning-button label="Yes" onclick={deleteCategory}></lightning-button>
+                                <lightning-button label="No" onclick={closeModal}></lightning-button>
+                            </center>
+                        </template>
+                        
+                        <template if:true={configDeleteMode}>
+                            <center>
+                                <p>Are you sure? All field values will be removed.</p>
+
+                                <lightning-button label="Yes" onclick={deleteConfig}></lightning-button>
+                                <lightning-button label="No" onclick={closeModal}></lightning-button>
+                            </center>
+                        </template>
+
+                    </div>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </div>
+    </template>
+</template>
