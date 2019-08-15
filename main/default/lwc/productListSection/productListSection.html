@@ -52,8 +52,8 @@
             </template>
 
             <template if:true={showFiltersMode}>
-                <lightning-layout-item size="4">
-                    <div class="slds-panel slds-size_medium slds-panel_docked slds-panel_docked-right slds-is-open" aria-hidden="false">
+                <lightning-layout-item size="3" class="slds-align_absolute-center" horizontal-align="center">
+                    <div class="slds-panel slds-size_medium slds-panel_docked slds-panel_docked-left slds-is-open" aria-hidden="false">
                         <div class="slds-panel__header">
                             <h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="Filter">Filter</h2>
                         </div>
@@ -72,6 +72,9 @@
                                                     </lightning-layout-item>
                                                 </lightning-layout>
                                             </template>
+                                            <template if:true={config.isSelect}>
+                                                <lightning-combobox name={config.name} label={config.label} options={config.values}></lightning-combobox>
+                                            </template>
                                             <template if:false={config.isNumber}>
                                                 <lightning-input name={config.name} label={config.name} isnumber={config.isNumber} type={config.type} onchange={handleFilterChange}></lightning-input>
                                             </template>
@@ -87,32 +90,32 @@
                     </div>
                 </lightning-layout-item>
             </template>
-            <lightning-layout-item size="8">
-
-                <table class="slds-table slds-table_cell-buffer slds-table_bordered">
-                    <thead>
-                    <tr class="slds-line-height_reset">
-                        <template for:each={configsToShow} for:item="config">
-                            <th class="" scope="col" key={config.id}>
-                                <div class="slds-truncate" title={config.name}>{config.name}</div>
-                            </th>
-                        </template>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <template for:each={selectedProducts} for:item="product">
-                        <tr class="slds-hint-parent" key={product}>
-                            <template for:each={product} for:item="field">
-                                <td   key={field.Id}>
-
-                                    <div class="slds-truncate" title={field.Value__c}>{field.Value__c}</div>
-                                </td>
+            <lightning-layout-item size="9" class="slds-panel slds-size_medium slds-panel_docked slds-panel_docked-left slds-is-open">
+                <lightning-layout horizontal-align="end">
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                        <thead>
+                        <tr class="slds-line-height_reset">
+                            <template for:each={configsToShow} for:item="config">
+                                <th class="" scope="col" key={config.id}>
+                                    <div class="slds-truncate" title={config.name}>{config.name}</div>
+                                </th>
                             </template>
                         </tr>
-                    </template>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        <template for:each={selectedProducts} for:item="product">
+                            <tr class="slds-hint-parent" key={product}>
+                                <template for:each={product} for:item="field">
+                                    <td   key={field.Id}>
 
+                                        <div class="slds-truncate" title={field.Value__c}>{field.Value__c}</div>
+                                    </td>
+                                </template>
+                            </tr>
+                        </template>
+                        </tbody>
+                    </table>
+                </lightning-layout>
             </lightning-layout-item>
         </lightning-layout>
     </lightning-card>

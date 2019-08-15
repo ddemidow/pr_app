@@ -1,5 +1,23 @@
 global with sharing class ProductService
 {
+    public static List<Product2> getUpdatedRecords(List<Product2> newProducts, Map<Id, Product2> oldProductsById, List<String> fieldNames)
+    {
+        Map<Id, Product2> updatedCreditApplications = new Map<Id, Product2>();
+        
+        for (Product2 currentProduct : newProducts)
+        {
+            for (String currentFieldName : fieldNames)
+            {
+                if (oldProductsById.get(currentProduct.Id).get(currentFieldName) != currentProduct.get(currentFieldName))
+                {
+                    updatedCreditApplications.put(currentProduct.Id, currentProduct);
+                }
+            }
+        }
+        
+        return updatedCreditApplications.values();
+    }
+    
     global static void assignProductOnCategories(List<Product2> products)
     {
         Set<Id> categoryIds = new Set<Id>();
