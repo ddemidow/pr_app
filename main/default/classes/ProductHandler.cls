@@ -4,6 +4,7 @@ public with sharing class ProductHandler implements TriggerTemplate.Handler
     {
         'Category__c'
     };
+	//test me!!
     
     private List<Product2> newValues;
     private Map<Id, Product2> oldValues;
